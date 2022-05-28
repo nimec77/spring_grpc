@@ -1,15 +1,19 @@
 syntax = "proto3";
 
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
 message User {
-  string lastname = 1;
-  string firstname = 2;
-  string middlename = 3;
-  int32 age = 4;
+  int64 id = 1;
+  string lastname = 2;
+  string firstname = 3;
+  string middlename = 4;
+  int32 age = 5;
   enum Gender {
     MALE = 0;
     FEMALE = 1;
   }
-  Gender gender = 5;
+  Gender gender = 6;
 }
 
 message RegistrationResult {
@@ -17,6 +21,10 @@ message RegistrationResult {
   string error = 2;
 }
 
+message ListUsersInput {}
+
 service RegistrationService {
-  rpc Register(User) returns (RegistrationResult);
+  rpc RegisterUser(User) returns (RegistrationResult);
+  rpc GetUserById(google.protobuf.Int64Value) returns(User);
+  rpc listUsers(ListUsersInput) returns (stream User);
 }
